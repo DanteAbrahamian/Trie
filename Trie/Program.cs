@@ -4,7 +4,11 @@
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+
+            Trie trie = new Trie();
+            
+            trie.Insert("dog");
+            ;
         }
     }
 }
