@@ -8,6 +8,8 @@
             Trie trie = new Trie();
             
             trie.Insert("dog");
+            trie.Insert("cat");
+            trie.Insert("cool");
             ;
         }
     }
