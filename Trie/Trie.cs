@@ -24,7 +24,7 @@ namespace Trie
 
             Insert(curr, word, 0);
         } // Add a word to the Trie   
-        private Trie Insert(TrieNode curr, string word, int index)
+        private void Insert(TrieNode curr, string word, int index)
         {
 
             if (index <= word.Length - 1 && curr.Children.ContainsKey(word[index]))
@@ -41,27 +41,49 @@ namespace Trie
                 curr.IsWord = true;
             }
 
-            return null;
         }
 
 
-        public void SearchNode(string prefix)
+        public TrieNode SearchNode(string prefix)
         {
             TrieNode curr = root;
-            SearchNode(curr, prefix,0);
+            return SearchNode(curr, prefix,0);
         }
         private TrieNode SearchNode(TrieNode curr,string prefix, int index)
         {
-            if (curr.Children.ContainsKey(prefix[index]))
+            
+            if (index <= prefix.Length - 1 && curr.Children.ContainsKey(prefix[index]))
             {
-                SearchNode(curr.Children[prefix[index]], prefix, index + 1);
+                return SearchNode(curr.Children[prefix[index]], prefix, index + 1);
             }
+            if (index >= prefix.Length - 1 && curr.IsWord == true)
+            { 
+                return curr;
+                
+            }
+            
+            return null;
         } // Find the node at the end of this prefix. Use this function WHENEVER you need to find a node.
 
-        //public bool Contains(string word) 
-        //{
+        public bool Contains(string word)
+        {
+            TrieNode curr = root;
+            return Contains(curr, word, 0);
+        }
+        public bool Contains(TrieNode curr, string word, int index)
+        {
+            if (index <= word.Length - 1 && curr.Children.ContainsKey(word[index]))
+            {
+               return Contains(curr.Children[word[index]], word, index + 1);
+                
+            }
+            if (index >= word.Length - 1 && curr.IsWord == true)
+            {
+               return true;
+            }
 
-        //} // Return if a given word exists (use SearchNode)
+            return false;
+        } // Return if a given word exists (use SearchNode)
 
         //public List<string> GetAllMatchingPrefix(string prefix) 
         //{

@@ -10,6 +10,7 @@
             trie.Insert("dog");
             trie.Insert("cat");
             trie.Insert("cool");
+            bool a = trie.Contains("cool");
             ;
         }
     }
