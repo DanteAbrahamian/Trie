@@ -42,29 +42,26 @@ namespace Trie
             }
 
         }
-
-
         public TrieNode SearchNode(string prefix)
         {
             TrieNode curr = root;
-            return SearchNode(curr, prefix,0);
+            return SearchNode(curr, prefix, 0);
         }
-        private TrieNode SearchNode(TrieNode curr,string prefix, int index)
+        private TrieNode SearchNode(TrieNode curr, string prefix, int index)
         {
-            
+
             if (index <= prefix.Length - 1 && curr.Children.ContainsKey(prefix[index]))
             {
                 return SearchNode(curr.Children[prefix[index]], prefix, index + 1);
             }
             if (index >= prefix.Length - 1 && curr.IsWord == true)
-            { 
+            {
                 return curr;
-                
+
             }
-            
+
             return null;
         } // Find the node at the end of this prefix. Use this function WHENEVER you need to find a node.
-
         public bool Contains(string word)
         {
             TrieNode curr = root;
@@ -74,25 +71,49 @@ namespace Trie
         {
             if (index <= word.Length - 1 && curr.Children.ContainsKey(word[index]))
             {
-               return Contains(curr.Children[word[index]], word, index + 1);
-                
+                return Contains(curr.Children[word[index]], word, index + 1);
+
             }
             if (index >= word.Length - 1 && curr.IsWord == true)
             {
-               return true;
+                return true;
             }
 
             return false;
         } // Return if a given word exists (use SearchNode)
+        public List<string> GetAllMatchingPrefix(string prefix)
+        {
+            TrieNode curr = root;
+            string word = default;
+            List<string> output = [];
+            GetAllMatchingPrefix(SearchNode(prefix), prefix, output);
+            return output;
+        } // Get every word after a given prefix
+        public void GetAllMatchingPrefix(TrieNode curr, string word, List<string> output)
+        {
+            foreach (KeyValuePair<char, TrieNode> child in curr.Children)
+            {
+                GetAllMatchingPrefix(child.Value, word + child.Value.Letter, output);
+            }
 
-        //public List<string> GetAllMatchingPrefix(string prefix) 
-        //{
+            if (curr.IsWord == true)
+            {
+                output.Add(word);
+            }
+        }
 
-        //} // Get every word after a given prefix
+        public bool Remove(string word)
+        {
+            TrieNode curr = SearchNode(word);
 
-        //public bool Remove(string word) 
-        //{
-
-        //} // Remove a given word if it exists, and return if you found it
+            if (curr.Children != null)
+            {
+                curr.IsWord = false;
+            }
+            else
+            { 
+                
+            }
+        } // Remove a given word if it exists, and return if you found it
     }
 }
