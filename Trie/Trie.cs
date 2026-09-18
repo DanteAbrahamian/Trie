@@ -12,11 +12,12 @@ namespace Trie
 
 
         TrieNode root = new TrieNode(default);
-        static int count = 0;
+        public int count = 0;
         public void Clear() // Delete all data in the Trie
         {
             root.Children.Clear();
         }
+
         public void Insert(string word)
         {
             TrieNode curr = root;
@@ -42,6 +43,7 @@ namespace Trie
             }
 
         }
+
         public TrieNode SearchNode(string prefix)
         {
             TrieNode curr = root;
@@ -62,12 +64,13 @@ namespace Trie
 
             return null;
         } // Find the node at the end of this prefix. Use this function WHENEVER you need to find a node.
+       
         public bool Contains(string word)
         {
             TrieNode curr = root;
             return Contains(curr, word, 0);
         }
-        public bool Contains(TrieNode curr, string word, int index)
+        private bool Contains(TrieNode curr, string word, int index)
         {
             if (index <= word.Length - 1 && curr.Children.ContainsKey(word[index]))
             {
@@ -81,6 +84,7 @@ namespace Trie
 
             return false;
         } // Return if a given word exists (use SearchNode)
+        
         public List<string> GetAllMatchingPrefix(string prefix)
         {
             TrieNode curr = root;
@@ -89,7 +93,7 @@ namespace Trie
             GetAllMatchingPrefix(SearchNode(prefix), prefix, output);
             return output;
         } // Get every word after a given prefix
-        public void GetAllMatchingPrefix(TrieNode curr, string word, List<string> output)
+        private void GetAllMatchingPrefix(TrieNode curr, string word, List<string> output)
         {
             foreach (KeyValuePair<char, TrieNode> child in curr.Children)
             {
@@ -104,15 +108,19 @@ namespace Trie
 
         public bool Remove(string word)
         {
-            TrieNode curr = SearchNode(word);
-
-            if (curr.Children != null)
+            if (Contains(word) == false)
             {
-                curr.IsWord = false;
+                return false;
+            }
+            if(SearchNode(word).IsWord == true)
+            {
+                SearchNode(word).IsWord = false;
+                count--;
+                return true;
             }
             else
-            { 
-                
+            {
+                return false;
             }
         } // Remove a given word if it exists, and return if you found it
     }
